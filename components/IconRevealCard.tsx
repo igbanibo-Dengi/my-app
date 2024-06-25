@@ -14,7 +14,7 @@ export const IconRevealCard = ({
   children,
   className,
 }: IconRevealCardProps) => {
-  const [widthPercentage, setWidthPercentage] = useState(70);
+  const [widthPercentage, setWidthPercentage] = useState(65);
   const [heightPercentage, setHeightPercentage] = useState(33);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const [boundingRect, setBoundingRect] = useState<DOMRect | null>(null);
@@ -26,26 +26,29 @@ export const IconRevealCard = ({
     }
   }, []);
 
-  const updatePercentages = (clientX: number, clientY: number) => {
-    if (boundingRect) {
-      const relativeX = clientX - boundingRect.left;
-      const relativeY = clientY - boundingRect.top;
-      setWidthPercentage((relativeX / boundingRect.width) * 100);
-      setHeightPercentage((relativeY / boundingRect.height) * 40);
-    }
-  };
+  const updatePercentages = useCallback(
+    (clientX: number, clientY: number) => {
+      if (boundingRect) {
+        const relativeX = clientX - boundingRect.left;
+        const relativeY = clientY - boundingRect.top;
+        setWidthPercentage((relativeX / boundingRect.width) * 100);
+        setHeightPercentage((relativeY / boundingRect.height) * 40);
+      }
+    },
+    [boundingRect]
+  );
 
   const mouseMoveHandler = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       event.preventDefault();
       updatePercentages(event.clientX, event.clientY);
     },
-    [boundingRect]
+    [updatePercentages]
   );
 
   const mouseLeaveHandler = useCallback(() => {
     setIsMouseOver(false);
-    setWidthPercentage(70);
+    setWidthPercentage(65);
     setHeightPercentage(33);
   }, []);
 
@@ -59,7 +62,7 @@ export const IconRevealCard = ({
       const { clientX, clientY } = event.touches[0];
       updatePercentages(clientX, clientY);
     },
-    [boundingRect]
+    [updatePercentages]
   );
 
   return (
@@ -72,12 +75,12 @@ export const IconRevealCard = ({
       onTouchMove={touchMoveHandler}
       ref={cardRef}
       className={cn(
-        "w-[40rem] h-[400px] rounded-lg relative overflow-hidden",
+        "w-[40rem] h-[400px] rounded-lg relative overflow-hidden bg-[#1D1C20]",
         className
       )}
+      aria-label="Icon Reveal Card"
     >
       {children}
-
       <div className="h-full relative flex flex-col overflow-hidden">
         <div className="py-5 px-10 mb-4">
           <h2 className="font-bold text-lg text-white">
@@ -94,10 +97,10 @@ export const IconRevealCard = ({
             isMouseOver
               ? {
                   opacity: widthPercentage > 0 ? 1 : 0,
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
+                  clipPath: `polygon(0 0, ${widthPercentage}% 0, ${widthPercentage}% 100%, 0 100%)`,
                 }
               : {
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
+                  clipPath: `polygon(0 0, ${widthPercentage}% 0, ${widthPercentage}% 100%, 0 100%)`,
                 }
           }
           transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
@@ -105,12 +108,11 @@ export const IconRevealCard = ({
         >
           {revealElement}
         </motion.div>
-
         <motion.div
           animate={{
-            left: `${widthPercentage}%`,
-            top: `${heightPercentage}%`,
-            rotate: `0deg`,
+            left: `calc(${widthPercentage}% - 20px)`, // Adjusted to center the separator
+            top: `calc(${heightPercentage}% - 20px)`, // Adjusted to center the separator
+            rotate: `5deg`,
             opacity: widthPercentage > 0 ? 1 : 0,
           }}
           transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
