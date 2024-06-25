@@ -116,7 +116,7 @@ export const IconRevealCard = ({
             opacity: widthPercentage > 0 ? 1 : 0,
           }}
           transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
-          className="h-full w-[40px] bg-gradient-to-r rounded-t-lg from-black via-gray-500 to-black absolute will-change-transform shadow-[0px_55px_57px_0px_rgba(0,_0,_0,_0.2)]"
+          className="h-[600px] w-[40px] bg-gradient-to-r rounded-t-lg from-black via-gray-500 to-black absolute will-change-transform shadow-[0px_55px_57px_0px_rgba(0,_0,_0,_0.2)]"
         >
           <div className="absolute w-20 h-60 -left-10 -top-10 bg-black/90 blur-3xl z-10 "></div>
           <motion.div className="bg-gradient-to-r from-gray-300 via-white to-gray-500 h-[70px] rounded-t-lg w-[40px] z-20" />
