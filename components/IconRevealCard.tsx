@@ -75,7 +75,7 @@ export const IconRevealCard = ({
       onTouchMove={touchMoveHandler}
       ref={cardRef}
       className={cn(
-        "w-[40rem] h-[400px] rounded-lg relative overflow-hidden bg-[#1D1C20]",
+        " w-[460px] md:w-[640px] h-[400px] rounded-lg relative overflow-hidden bg-[#1D1C20]",
         className
       )}
       aria-label="Icon Reveal Card"
